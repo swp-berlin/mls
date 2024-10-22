@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 
 from cosmogo.utils.settings import env, configure_sentry
@@ -69,3 +71,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
 }
+
+DATA_DIR = env('DATA_DIR', BASE_DIR / 'data')
+
+EMBEDDING_MODEL_NAME = env('EMBEDDING_MODEL_NAME', 'intfloat/multilingual-e5-large')
+EMBEDDING_MODEL_CACHE_DIR = env('EMBEDDING_MODEL_CACHE_DIR', DATA_DIR / 'embedding')
+
+NLTK_DATA_DIR = os.environ.setdefault('NLTK_DATA', f"{DATA_DIR / 'nltk'}")
