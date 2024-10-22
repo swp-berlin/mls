@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+
+# IDE
+/.idea
+*.iml
+
+# Python
+/env
+__pycache__
+*.py[co]
+
+# Application
+.env
+
+# Translations
+*.mo
