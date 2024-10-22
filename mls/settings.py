@@ -23,6 +23,7 @@ elif DEBUG:
     ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    'mls',
     'cosmogo',
     'rest_framework',
 ]
