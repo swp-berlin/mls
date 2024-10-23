@@ -1,0 +1,33 @@
+name: MLS Deployment
+
+on:
+  workflow_run:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: deploy
+      uses: appleboy/ssh-action@master
+      with:
+        proxy_host: ${{ secrets.PROXY_HOST }}
+        proxy_port: 6589
+        proxy_username: ci
+        proxy_key: ${{ secrets.DEPLOYMENT_KEY }}
+        host: 10.1.0.3
+        username: ci
+        key: ${{ secrets.DEPLOYMENT_KEY }}
+        port: 6589
+        script: |
+          sudo systemctl stop mls.service
+          cd /var/www/mls
+          git fetch --all --quiet
+          git checkout --force main
+          git reset --hard origin/main
+          git submodule update --init --recursive
+          find . -name '*.pyc' -delete
+          env/bin/pip install --no-input -Ur requirements.txt uwsgi
+          env/bin/python manage.py download-data
+          sudo systemctl start mls.service
+          sudo systemctl restart nginx.service

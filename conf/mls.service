@@ -1,0 +1,19 @@
+[Unit]
+Description=SWP Machine Learning Service
+After=syslog.target
+
+[Service]
+UMask=0002
+Restart=always
+KillSignal=SIGINT
+NotifyAccess=all
+StandardError=syslog
+Type=notify
+User=www-data
+Group=www-data
+RuntimeDirectory=mls
+RuntimeDirectoryMode=0755
+ExecStart=/bin/bash -c "/var/www/mls/env/bin/uwsgi --ini /var/www/mls/conf/uwsgi.ini"
+
+[Install]
+WantedBy=multi-user.target
