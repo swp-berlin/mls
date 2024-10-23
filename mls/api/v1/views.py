@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from mls.utils.embedding import embed, embed_query
 from mls.utils.extract import get_extractor
+from mls.utils.timed import timed
 
 from .router import router
 
@@ -51,6 +52,7 @@ class ExtractView(APIView):
 @router.register('embedding', basename='embedding')
 class EmbeddingView(ExtractView):
 
+    @timed
     def post(self, request: Request):
         text = self.extract(request)
         embedding = embed(text)
@@ -66,6 +68,7 @@ class QuerySerializer(serializers.Serializer):
 class QueryEmbeddingView(GenericAPIView):
     serializer_class = QuerySerializer
 
+    @timed
     def get(self, request):
         serializer: QuerySerializer = self.get_serializer(data=request.query_params)
 
