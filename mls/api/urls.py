@@ -1,9 +1,5 @@
-from django.urls import path
-
-from .v1 import router as router_v1
-
-app_name = 'api'
+from django.urls import path, include
 
 urlpatterns = [
-    path('v1/', router_v1.urls),
+    path('v1/', include('mls.api.v1.urls')),
 ]

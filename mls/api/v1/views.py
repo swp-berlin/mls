@@ -48,6 +48,11 @@ class ExtractView(APIView):
 
         return Response(text, content_type='text/plain')
 
+    def put(self, request: Request, filename: str):
+        assert filename, 'No filename present.'
+
+        return self.post(request)
+
 
 @router.register('embedding', basename='embedding')
 class EmbeddingView(ExtractView):
