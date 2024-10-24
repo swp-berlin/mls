@@ -64,6 +64,7 @@ USE_TZ = True
 TIME_ZONE = 'Europe/Berlin'
 
 STATIC_URL = 'static/'
+STATIC_ROOT = env('STATIC_ROOT', BASE_DIR / 'public' / 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
