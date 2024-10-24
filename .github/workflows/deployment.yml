@@ -31,6 +31,6 @@ jobs:
           find . -name '*.pyc' -delete
           env/bin/pip install --no-input -Ur requirements.txt uwsgi
           env/bin/python manage.py download-data
-          env/bin/python manage.py collectstatic
+          env/bin/python manage.py collectstatic --no-input
           sudo systemctl start mls.service
           sudo systemctl restart nginx.service
