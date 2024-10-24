@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'mls',
     'cosmogo',
     'rest_framework',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
