@@ -21,6 +21,7 @@ jobs:
         key: ${{ secrets.DEPLOYMENT_KEY }}
         port: 6589
         script: |
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
           sudo systemctl stop mls.service
           cd /var/www/mls
           git fetch --all --quiet
