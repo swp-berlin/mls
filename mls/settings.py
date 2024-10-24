@@ -2,7 +2,7 @@ import os
 
 from pathlib import Path
 
-from cosmogo.utils.settings import env, configure_sentry
+from cosmogo.utils.settings import env, configure_sentry, setdefault
 
 BASE_DIR = Path(__file__).parents[1]
 
@@ -77,7 +77,20 @@ REST_FRAMEWORK = {
 
 DATA_DIR = env('DATA_DIR', BASE_DIR / 'data')
 
-EMBEDDING_MODEL_NAME = env('EMBEDDING_MODEL_NAME', 'intfloat/multilingual-e5-large')
+LARGE_LANGUAGE_MODEL_NAME = 'intfloat/multilingual-e5-large'
+SMALL_LANGUAGE_MODEL_NAME = 'intfloat/multilingual-e5-small'
+
+EMBEDDING_MODEL_NAME = env('EMBEDDING_MODEL_NAME', SMALL_LANGUAGE_MODEL_NAME)
 EMBEDDING_MODEL_CACHE_DIR = env('EMBEDDING_MODEL_CACHE_DIR', DATA_DIR / 'embedding')
 
-NLTK_DATA_DIR = os.environ.setdefault('NLTK_DATA', f"{DATA_DIR / 'nltk'}")
+NLTK_DATA_DIR = setdefault('NLTK_DATA', DATA_DIR / 'nltk')
+
+FASTEMBED_MODEL_NAME = env('FASTEMBED_MODEL_NAME', LARGE_LANGUAGE_MODEL_NAME)
+FASTEMBED_MODEL_CACHE_DIR = env('FASTEMBED_MODEL_CACHE_DIR', EMBEDDING_MODEL_CACHE_DIR)
+
+SENTENCE_TRANSFORMERS_MODEL_NAME = env('SENTENCE_TRANSFORMERS_MODEL_NAME', EMBEDDING_MODEL_NAME)
+SENTENCE_TRANSFORMERS_HOME = setdefault('SENTENCE_TRANSFORMERS_HOME', EMBEDDING_MODEL_CACHE_DIR)
+
+TOKENIZERS_PARALLELISM = setdefault('TOKENIZERS_PARALLELISM', True, 'true')
+
+EMBEDDING_LIBRARY = env('EMBEDDING_LIBRARY', 'sbert')
