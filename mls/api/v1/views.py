@@ -6,6 +6,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
 from mls.utils.embedding import embed, embed_query
@@ -60,9 +61,11 @@ class EmbeddingView(ExtractView):
     @timed
     def post(self, request: Request):
         text = self.extract(request)
-        embedding = embed(text)
 
-        return Response(embedding)
+        if embedding := embed(text):
+            return Response(embedding)
+
+        return Response(status=HTTP_204_NO_CONTENT)
 
 
 class QuerySerializer(serializers.Serializer):

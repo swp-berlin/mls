@@ -24,13 +24,15 @@ def get_tokenizer(embedding: TextEmbedding):
     return embedding.model.tokenizer.encode
 
 
-def embed(text: str) -> List[float]:
+def embed(text: str) -> List[float] | None:
     embedding = get_embedding(settings.FASTEMBED_MODEL_NAME)
     tokenizer = get_tokenizer(embedding)
     documents = get_chunks(text, tokenizer)
-    embeddings = [*embedding.embed(documents)]
 
-    return avg(documents, embeddings)
+    if documents:
+        embeddings = [*embedding.embed(documents)]
+
+        return avg(documents, embeddings)
 
 
 def embed_query(query: str) -> List[float]:

@@ -1,4 +1,5 @@
 from functools import lru_cache, partial
+from typing import List
 
 from django.conf import settings
 
@@ -31,16 +32,18 @@ def get_tokenizer(transformer: SentenceTransformer):
     return tokenizer
 
 
-def embed(text: str):
+def embed(text: str) -> List[float] | None:
     transformer = get_transformer(settings.SENTENCE_TRANSFORMERS_MODEL_NAME)
     tokenizer = get_tokenizer(transformer)
     sentences = get_chunks(text, tokenizer)
-    embeddings = transformer.encode(sentences)
 
-    return avg(sentences, embeddings)
+    if sentences:
+        embeddings = transformer.encode(sentences)
+
+        return avg(sentences, embeddings)
 
 
-def embed_query(query: str):
+def embed_query(query: str) -> List[float]:
     [embedding] = get_transformer(settings.SENTENCE_TRANSFORMERS_MODEL_NAME).encode([query])
 
     return embedding
