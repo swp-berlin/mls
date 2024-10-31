@@ -1,14 +1,6 @@
-from io import StringIO
-from typing import BinaryIO
-
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdftypes import dict_value, resolve1
-
-params = LAParams()
-resources = PDFResourceManager(caching=True)
+from pdfminer import high_level
 
 
 class FixedPDFPage(PDFPage):
@@ -27,12 +19,6 @@ class FixedPDFPage(PDFPage):
         PDFPage.__init__(self, doc, page, attrs, label)
 
 
-def extract(fp: BinaryIO, password: str = ''):
-    output = StringIO()
-    device = TextConverter(resources, output, laparams=params)
-    interpreter = PDFPageInterpreter(resources, device)
+high_level.PDFPage = FixedPDFPage
 
-    for page in FixedPDFPage.get_pages(fp, password=password):
-        interpreter.process_page(page)
-
-    return output.getvalue()
+extract = high_level.extract_text
