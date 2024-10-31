@@ -1,8 +1,8 @@
-from typing import Callable, Optional, cast
+from typing import Callable, Optional
 
-from django.core.files.uploadedfile import UploadedFile
+from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 
-from .pdf import extract as extract_pdf
+from . import pdf
 
 Extractor = Callable[[UploadedFile], str]
 
@@ -13,7 +13,11 @@ def extract_plain(obj: UploadedFile):
     return content.decode(obj.charset)
 
 
-extract_pdf = cast(Extractor, extract_pdf)
+def extract_pdf(obj: UploadedFile):
+    if isinstance(obj, TemporaryUploadedFile):
+        return pdf.extract(obj.file.name)
+
+    return pdf.extract(obj.file)
 
 
 def get_extractor(media_type: str) -> Optional[Extractor]:
