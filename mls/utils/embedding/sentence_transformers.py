@@ -13,11 +13,11 @@ def get_transformer(model_name, *, local_files_only=True):
     return SentenceTransformer(
         model_name,
         local_files_only=local_files_only,
-        cache_folder=settings.SENTENCE_TRANSFORMERS_HOME,
+        cache_folder=settings.EMBEDDING_MODEL_CACHE_DIR,
     )
 
 
-download = partial(get_transformer, settings.SENTENCE_TRANSFORMERS_MODEL_NAME)
+download = partial(get_transformer, settings.EMBEDDING_MODEL_NAME)
 
 
 def get_tokenizer(transformer: SentenceTransformer):
@@ -33,7 +33,7 @@ def get_tokenizer(transformer: SentenceTransformer):
 
 
 def embed(text: str) -> List[float] | None:
-    transformer = get_transformer(settings.SENTENCE_TRANSFORMERS_MODEL_NAME)
+    transformer = get_transformer(settings.EMBEDDING_MODEL_NAME)
     tokenizer = get_tokenizer(transformer)
     sentences = get_chunks(text, tokenizer)
 
@@ -44,6 +44,6 @@ def embed(text: str) -> List[float] | None:
 
 
 def embed_query(query: str) -> List[float]:
-    [embedding] = get_transformer(settings.SENTENCE_TRANSFORMERS_MODEL_NAME).encode([query])
+    [embedding] = get_transformer(settings.EMBEDDING_MODEL_NAME).encode([query])
 
     return embedding
