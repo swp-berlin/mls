@@ -6,6 +6,8 @@ It provides a REST API to calculate embeddings for text data. The embeddings are
 
 The service is able to process HTML, Text and PDF files.
 
+See the [docs folder](docs/) for more information. 
+
 ## Development Setup
 
 Create a virtual environment and install the requirements:
