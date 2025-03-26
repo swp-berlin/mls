@@ -48,6 +48,9 @@ def iter_chunks(text: str, tokenize: Tokenizer) -> Iterator[str]:
         else:
             chunk = segment
 
+    if chunk:
+        yield chunk
+
 
 def split_sentence(sentence: str, tokenize: Tokenizer):
     words = nltk.word_tokenize(sentence)
