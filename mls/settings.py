@@ -2,13 +2,17 @@ import os
 
 from pathlib import Path
 
-from cosmogo.utils.settings import env, configure_sentry, setdefault
+from dotenv import load_dotenv
+
+from cosmogo.utils.settings import env, configure_sentry, get_git_commit, setdefault
 
 BASE_DIR = Path(__file__).parents[1]
 
+load_dotenv(BASE_DIR / '.env')
+
 ENVIRONMENT = env('ENVIRONMENT', 'default')
 
-RELEASE = env('RELEASE')
+RELEASE = get_git_commit(BASE_DIR)
 
 if SENTRY_DSN := env('SENTRY_DSN'):
     configure_sentry(SENTRY_DSN, ENVIRONMENT, RELEASE, celery=True, send_default_pii=True)
