@@ -1,18 +1,22 @@
 import os
 
+from itertools import islice
 from typing import Callable, Iterator, List
 
 import nltk
 import numpy as np
+
+from django.conf import settings
 
 from tokenizers import Encoding
 
 Tokenizer = Callable[[str], Encoding]
 
 
-def get_chunks(text: str, tokenize: Tokenizer):
+def get_chunks(text: str, tokenize: Tokenizer, *, limit=settings.EMBEDDING_CHUNK_LIMIT):
     text = prepare_text(text)
     chunks = iter_chunks(text, tokenize)
+    chunks = islice(chunks, limit)
 
     return list(chunks)
 
