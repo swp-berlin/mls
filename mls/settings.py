@@ -15,7 +15,7 @@ ENVIRONMENT = env('ENVIRONMENT', 'default')
 RELEASE = get_git_commit(BASE_DIR)
 
 if SENTRY_DSN := env('SENTRY_DSN'):
-    configure_sentry(SENTRY_DSN, ENVIRONMENT, RELEASE, celery=True, send_default_pii=True)
+    configure_sentry(SENTRY_DSN, ENVIRONMENT, RELEASE)
 
 DEBUG = env('DEBUG', ENVIRONMENT == 'develop')
 
